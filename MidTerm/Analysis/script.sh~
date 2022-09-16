@@ -1,0 +1,54 @@
+#!/bin/bash
+
+ipfs daemon &
+sleep 3
+
+pid=$(echo "$!")
+
+ipfs get $1
+
+touch logPeers.csv
+echo  "\"IP\";\"CID\";\"Byte_received\";\"Block_received\"" >> logPeers.csv
+
+touch logBA.csv
+echo "\"CID\"" >> logBA.csv
+
+x=$(ipfs bitswap stat --verbose | grep "\n")
+j=0
+
+for i in $x
+do
+    if [[ $j -gt 11 ]]; then
+      echo $i >> logBA.csv
+    fi
+    j=$(($j+1))
+done
+
+ip=$(ipfs swarm peers | cut -d/ -f3)
+ip_arr=($(echo $ip | tr " " "\n"))
+y=0
+
+for id in $(ipfs swarm peers | rev | cut -d/ -f1 | rev)
+do
+    x=$(ipfs bitswap ledger $id | grep "Bytes received")
+    nx=$(echo $x | tr ":" "\n")
+    
+    for byte in $nx
+    do    
+ 	if [[ $byte != "Bytes" && $byte != "received" && $byte != "0" ]] ; then
+	    
+	    block=$(($byte/1204))
+	    
+	    log="${ip_arr[$y]};$id;$bit;$block"
+	    
+	    echo $log >> logPeers.csv
+	fi
+    done
+    y=$(($y+1))
+    
+done
+
+kill -2 $pid
+sleep 3
+
+

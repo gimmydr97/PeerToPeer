@@ -1,0 +1,58 @@
+PARTE 1
+
+
+Gli abitanti di Valadilène eleggono un sindaco ogni 50 anni. Un sindaco ha compiti molto importanti come decidere gli addobbi di Valadilène durante i festeggiamenti o organizzare il Maxi-Delirium, il buffet mensile dove i cittadini di Valadilène si incontrano e si divertono. Tuttavia, un sindaco deve anche risolvere i conflitti tra le famiglie rivali, soprattutto quelle che hanno iniziato una guerra cento anni fa e non si ricordano più il motivo. Tanti altri compiti tengono impegnato il sindaco, il tempo passa e, dopo 50 anni, i cittadini devono decidere se confermare il sindaco o cacciarli da Valadilène per il pessimo lavoro! "Sayonara, il mio sindaco!" è la tipica frase che la gente dice a un sindaco non confermato mentre lascia Valadilène.
+È curioso come sia nato il sistema Valadilène per eleggere e confermare. È iniziato come un gioco 3500 anni fa, quando Valadilène era governata da persone fastidiose che affermavano di essere figli di alcuni dei e si facevano chiamare Faraoni, o qualcosa del genere. Il gioco piacque a tutti e smisero di considerare i Faraoni, nonostante le loro lamentele. Al giorno d'oggi, i faraoni hanno un'accogliente caffetteria per gatti nel centro della città. Hanno sempre amato i gatti.
+
+In fondo, chiunque può essere sindaco. La carriera inizia con il candidato che lavora come sindaco in prova per un mese. La sfida principale di un sindaco in prova è organizzare il Maxi-Delirium. A fine mese i cittadini sono chiamati a confermare, o meno, il sindaco in prova. Se confermato, il sindaco in prova, diventa sindaco per i prossimi 50 anni, e i cittadini sono chiamati nuovamente a votare per la conferma al termine di questi 50 anni.
+Confermare un sindaco è un periodo di creatività a Valadilène. Ogni cittadino crea in segreto il proprio sigillo, un simbolo che utilizzerà per associare a se stesso un voto in futuro. È tradizione, dopo la conferma del sindaco, di indire un concorso per il sigillo più bello, ma questa è un'altra storia. Ogni cittadino mette in una busta il proprio sigillo, un doblon votante e una parte della propria soul. Il doblon ha due lati: un lato yay, che illustra un cappello lungo, e un lato nay, che illustra uno stivale nell'atto di calciare. Chiunque può colorare solo un lato che rappresenta il proprio voto a favore, yay, o non favorevole, nay, al sindaco. La soul rappresenta ciò che qualcuno chiama “denaro”, e durante il voto rappresenta apprezzamento, o deprezzamento, per il sindaco: più soul investe un cittadino, più conta il suo voto. Quando il periodo di votazione è finito Fibonacci, Ada e Nakamoto, i membri del consiglio di conteggio, contano i voti. Sommano le souls attaccata agli yay doblons e ai nay doblons. Se ci sono più yay souls, il sindaco in carica è confermato per cinquant'anni! Se ci sono più nay soul, il sindaco in carica viene cacciato da Valadilène e “Sayonara, il mio sindaco!”. Qual è lo scopo del sigillo, chiedi? Ebbene, gli elettori che hanno “perso” possono riavere le loro souls se dimostrano di avere un sigillo identico a quello che è stato messo dentro la busta. Ecco perché il concorso dei sigilli viene indetto solo dopo la conferma del sindaco, perché i sigilli devono rimanere segreti, altrimenti qualcuno può rivendicare le souls di altri cittadini!
+Spero che la tua curiosità su Valadilène sia ora soddisfatta. Probabilmente molte cose ti suonano strane, una creatura vivente, ma capirai un giorno, in futuro ...
+
+The smart contract
+
+Uno smart contract Solidity implementa il sistema di conferma del sindaco di Valadilène. Il costruttore dello smart contract accetta tre parametri: l'indirizzo del sindaco, un indirizzo di escrow e il quorum, ovvero il numero di buste da inviare e da aprire per terminare la conferma del sindaco. Lo smart contract raccoglie le buste, le apre e calcola il risultato. Le funzioni principali sono le seguenti: 
+
+- compute_envelope (): una busta viene calcolata facendo l'hash della rappresentazione in byte di tre input: il sigil (uint), il doblon 
+			(bool), l'anima (uint). La rappresentazione in byte di un input arbitrario può essere ottenuta con abi.encode 				(params, ...) di Solidity, che restituisce byte, e l'hash viene calcolato con Solidity keccak256, che restituisce 				bytes32. 
+
+- cast_envelope (): lo smart contract raccoglie le buste fino a raggiungere il quorum.
+
+- open_envelope (): Dopodiché, ogni elettore può aprire qualsiasi busta che ha precedentemente inviato per esprimere ufficialmente il 			     proprio voto. Un elettore fornisce gli input precedentemente utilizzati per calcolare la busta: il sigillo, il doblon 		     e l'anima. In questa fase l'anima viene effettivamente inviata allo smart contract come criptovaluta.
+
+- mayor_or_sayonara (): Dopo che tutte le buste sono state aperte, lo smart contract controlla se il sindaco è confermato o meno: il 				 sindaco viene confermato se i voti yay sono strettamente maggiori (>) dei voti negativi. In ogni caso, gli 			 elettori che hanno espresso il “voto perdente” (nay in caso di conferma, yay in caso di bocciatura) recuperano le 			 souls come rimborso. Se il sindaco è stato confermato, il nuovo sindaco riceve, al suo indirizzo, le souls 			 associate ai voti yay come contributo alle spese per i prossimi 50 anni; in caso contrario, le souls associata ai 			 voti negativi vengono assegnate all'"escrow account" dichiarato durante la creazione del contratto.
+
+Task
+
+Visto lo smart contract Mayor.sol associato a questo assigment, lo studente è chiamato a rispondere alle seguenti domande:
+
+1. Implementa le funzioni open_envelope() e mayor_or_sayonara(). Sentiti libero di apportare qualsiasi modifica agli attributi dello stato dello smart contract;
+
+2. Valutare il costo in gas delle funzioni previste dallo smart contract: 
+	a. Fornire 2 o 3 variazioni di costo della funzione mayor_or_sayonara(), ad esempio fissando il quorum e variando il numero di 		   elettori perdenti, oppure variando il quorum o qualsiasi altro metodo;
+	
+3. Quali sono le considerazioni sulla sicurezza e le potenziali vulnerabilità legate alla funzione mayor_or_sayonara()? 
+   Elencali e spiegali.
+   
+4. La funzione compute_envelope() è una helper function per il calcolo della busta. 
+   Perché la sua presenza sarebbe un problema se lo smart contract viene distribuito sulla rete Ethereum?
+   
+Nota 1: lo smart contract può essere facilmente sfruttato inviando buste "inutili" (random bytes32), o non aprendole mai. Considera 
+        le condizioni per passare da una fase all'altra (cioè i modificatori in Mayor.sol) come condizioni rappresentative.
+        
+Nota2: poiché il voto, busta, è segreto, qualcuno potrebbe inviare una busta con anima 0, raggiungendo così il quorum più velocemente. 
+       Per semplificare l'esercizio, non considerarlo come un punto debole (per il motivo nella Nota 1).
+
+Le attività del compito possono essere svolte su Remix (https://remix.ethereum.org) o su qualsiasi piattaforma preferita dallo studente.
+
+
+PARTE2  
+
+Prima domanda:
+Uno dei principali problemi che gli inventori di Bitcoin hanno dovuto affrontare è quello della “doppia spesa”. Immagina di avere 1 BTC nel tuo portafoglio, decidi di acquistare un'auto, vai dal rivenditore di auto e paghi con il tuo BTC. Dopo aver ricevuto l'auto decidi di acquistare una barca a vela, ma non hai più soldi. Saresti in grado di acquistare la barca a vela in qualche modo "raddoppiando la spesa" di 1 BTC che avevi in precedenza? Mostra come un attaccante può eseguire un attacco a doppia spesa e quali sono le contromisure che Bitcoin definisce per proteggere il sistema da questo attacco.
+
+Seconda domanda:
+Alice e Bob hanno diversi rapporti commerciali e decidono di aprire un canale della rete Lightning di Bitcoin. Inizialmente ognuno di loro decide di finanziare il canale con 10 Satoshi. Quindi, eseguono alcune transazioni modificando i loro saldi nel canale, come mostrato nella figura seguente: ...
+Dopo l'ultima transazione, Alice cerca di imbrogliare Bob, pubblicando la seconda transazione, che le è più favorevole, perché lo stato del canale, dopo la seconda transazione, assegna 13 Satoshi ad Alice e 11 Satoshi a Bob, mentre, dopo l'ultima transazione, 11 Satoshi  sono assegnati ad Alice e 9 Satoshi a Bob. Descrivi come Bob può evitare che la truffa abbia successo, evidenziando le funzionalità della blockchain che vengono sfruttate per prevenire la truffa.
+
+1000000000000000000
+[["0x5B38Da6a701c568545dCfcB03FcB875f56beddC4","0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2"],["0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c","0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2"]]

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Valadilène voting system</title>
+    <link rel="stylesheet" type="text/css" href = "css\beauty.css">
+    <script language="JavaScript">
+        timeout_id = setTimeout(function(){document.getElementById('events').style.display="none"}, 250000);
+    </script>
+</head>
+<body>
+    <div id = "lds-spinner">
+        <br><br>
+        <h1 class="text-center"> Access with a metamask account</h1>
+        <div class="lds-spinner" >
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+    </div>
+    <div class="container" id = "container" align = "center" style="display:none;" >
+        <div class="row">        
+            <div id="mainUI" class="col-lg-9">
+                
+                <h1 class="text-center">Valadilène voting system</h1>
+                <br>
+                <h4 class="text-center" id="accountId">Your address: </h4>
+                
+                <form name="form" >
+                    <br><br>
+                    <label for="sigil" ><b> Sigil: </b></label>
+                    <input type="number" id="sigil" name="sigil"><br><br>
+
+                    <label for="soul"><b>Soul:</b></label>
+                    <input type="number" id="soul" name="soul"><br><br>
+
+                    <label for="candidate"><b>Candidate:</b></label>
+                    <select name="select_candidates" id="select_candidates"></select><br><br>
+  
+                </form>
+                
+                <br><br><br><br>
+                <button class="btn btn-primary" onclick="App.pressSend()">send envelope</button>
+                <button class="btn btn-primary" onclick="App.pressOpen()">open envelope</button>
+                <button class="btn btn-primary" onclick="App.pressMayorOrSayonara()">MayorOrSayonara?</button>
+                <div id="events">
+                    <h4 id="eventIdsend"></h4>
+                    <h4 id="eventIdopen"></h4>   
+                </div>
+                <h4 id="eventIdmos"></h4> 
+                
+                    
+                
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <!-- Web3 -->
+    <script src="./dist/web3.min.js"></script>
+    <script src="./dist/truffle-contract.js"></script>
+    <!-- App -->
+    <script src="./js/app.js"></script>
+    
+</body>
+</html>

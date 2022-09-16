@@ -1,0 +1,26 @@
+the voting doblon, which is not useful anymore, is substituted with the candidate’s symbol.
+
+Each candidate associates to themselves a personal public symbol that uniquely identifies
+them, they create many copies that are sent to the homes of the citizens of Valadilène
+together with their government plan. No wonder half of the plan is dedicated to how to
+organize the Maxi-Delirium. During the election day, each voter puts inside their envelope,
+together with their sigil and the soul, the symbol of the candidate they want to elect. The
+decision is mainly driven by how cool and fun the next Maxi-Deliriums will be important the
+plans to develop and improve Valadilène are.
+
+Similar to the old mechanism, the envelopes are first collected and only afterwards opened
+and counted by the counting council members. Moreover, those who voted for the losing
+candidates get their soul back as a refund.
+
+Generalize the smart contract of the final term. Instead of having a single
+candidate who wins or loses, the contract keeps a list of candidates identified by their
+symbol, i.e. the Ethereum address: the candidate who gets more soul (cryptocurrency)
+associated with the votes wins; in case of two, or more, candidates receive the same soul,
+the candidate with more votes wins; in case of an additional tie, no one wins.
+
+The candidate list is passed to the smart contract at its creation (argument of the
+constructor). After declaring the winner, all the soul associated with the users who voted for
+the losing candidates receive their soul back; in case no one wins, all the soul go to the
+escrow account.
+
+wrist output orchard coconut grant cargo tone type eight elephant surround cycle
